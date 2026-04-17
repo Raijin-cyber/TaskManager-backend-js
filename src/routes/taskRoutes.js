@@ -1,24 +1,17 @@
 import express from "express";
 import validateToken from "../middlewares/validateToken.js";
+import { createTask, getUserTasks, updateTask, deleteTask } from "../controllers/taskControllers.js";
 
 const taskRoutes = express.Router();
 
 taskRoutes.use(validateToken);
 
-taskRoutes.route("/create").post((req, res) => {
-  res.send("Task created successfully");  
-})
+taskRoutes.route("/create").post(createTask)
 
-taskRoutes.route("/tasks").get((req, res) => {
-  res.send("Fetched all tasks successfully");  
-})
+taskRoutes.route("/get").get(getUserTasks)
 
-taskRoutes.route("/update").post((req, res) => {
-  res.send("Updated task successfully");  
-})
-
-taskRoutes.route("/delete").post((req, res) => {
-  res.send("Task deleted successfully");  
-})
+taskRoutes.route("/:id")
+.put(updateTask)
+.delete(deleteTask);
 
 export default taskRoutes;
