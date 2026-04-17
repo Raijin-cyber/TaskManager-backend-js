@@ -1,25 +1,23 @@
 import express from "express";
+import validateToken from "../middlewares/validateToken.js";
+import { registerUser, loginUser, refreshToken, logoutUser, updateUser, deleteUser } from "../controllers/authControllers.js";
 
 const authRoutes = express.Router();
 
-authRoutes.route("/register").post((req, res) => {
-    res.status(201).json({message: "User created successfully"});
-})
+// these routes are public and don't require to validate token
+authRoutes.route("/register").post(registerUser)
 
-authRoutes.route("/login").post((req, res) => {
-    res.status(200).json({message: "User Logged-in"});
-})
+authRoutes.route("/login").post(loginUser) 
 
-authRoutes.route("/logout").post((req, res) => {
-    res.status(200).json({message: "User Logged-out"});
-})
+authRoutes.route("/refresh").post(refreshToken) 
 
-authRoutes.route("/update").put((req, res) => {
-    res.json({message: "User updated successfully"});
-})
+// applying a middleware, all request will first go through this middleware
+authRoutes.use(validateToken);
 
-authRoutes.route("/delete").delete((req, res) => {
-    res.json({message: "User account deleted successfully"});
-})
+authRoutes.route("/logout").post(logoutUser)
+
+authRoutes.route("/update").put(updateUser)
+
+authRoutes.route("/delete").delete(deleteUser)
 
 export default authRoutes;

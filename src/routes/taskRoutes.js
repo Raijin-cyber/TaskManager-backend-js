@@ -1,6 +1,9 @@
 import express from "express";
+import validateToken from "../middlewares/validateToken.js";
 
 const taskRoutes = express.Router();
+
+taskRoutes.use(validateToken);
 
 taskRoutes.route("/create").post((req, res) => {
   res.send("Task created successfully");  
